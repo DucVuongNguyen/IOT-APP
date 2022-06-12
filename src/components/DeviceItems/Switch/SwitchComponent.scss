@@ -1,0 +1,185 @@
+.SwitchComponent-Box {
+    background-color: white;
+    width: 350px;
+    height: 220px;
+    border-radius: 15px;
+    padding: 10px 20px 10px 10px;
+    margin: 20px;
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
+
+
+    .SwitchComponent-Left {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+
+        .SwitchComponent-img {
+            width: 50%;
+            height: 50%;
+            cursor: pointer;
+        }
+
+        .SwitchComponent-NameCustom {
+            font-size: 24px;
+            font-weight: bold;
+            width: fit-content;
+            height: 50%;
+            overflow: hidden;
+            color: rgb(105, 105, 105);
+        }
+
+        .SwitchComponent-NameDevice {
+            width: fit-content;
+            font-size: 16px;
+            color: rgb(105, 105, 105, 0.5);
+        }
+
+
+    }
+
+    .SwitchComponent-Left:hover .SwitchComponent-NameCustom {
+        color: rgb(24, 154, 70, 0.6);
+
+
+    }
+
+    .rule {
+        background: rgb(255, 255, 255, 0.3);
+        border-radius: 20px;
+        border: solid rgb(105, 105, 105, 0.3) 0.5px;
+        width: 5px;
+        height: 40%;
+        margin: 0px 10px;
+    }
+
+    .SwitchComponent-Right {
+        width: 20%;
+        height: 100%;
+        padding: 0px 20px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        align-items: center;
+
+
+        .faExclamation {
+            padding: 10px 0px;
+            color: rgb(247, 54, 38, 0.8);
+        }
+
+        .NotifyConnect-SwitchComponent {
+            width: 100%;
+            height: 30%;
+            overflow: hidden;
+            font-size: 14px;
+            text-align: center;
+            color: rgb(24, 154, 70, 0.6);
+            position: absolute;
+            bottom: 5px;
+
+        }
+
+        .NotifyDisconnect-SwitchComponent {
+            width: 100%;
+            height: 30%;
+            overflow: hidden;
+            font-size: 14px;
+            text-align: center;
+            color: rgb(247, 54, 38, 0.8);
+            position: absolute;
+            bottom: 5px;
+
+        }
+
+        .SwitchComponent-SwitchOn {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background-color: rgb(250, 250, 250, 1);
+            border: solid rgb(24, 154, 70, 0.6) 1px;
+            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            bottom: 50%;
+
+
+
+            .SwitchComponent-faPowerOn {
+                font-size: 30px;
+                color: rgb(24, 154, 70, 0.6);
+            }
+        }
+
+        .SwitchComponent-SwitchOff {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background-color: rgb(250, 250, 250, 1);
+            border: solid rgb(247, 54, 38, 0.8)1px;
+            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            position: absolute;
+            bottom: 50%;
+
+            .SwitchComponent-faPowerOff {
+                font-size: 30px;
+                color: rgb(247, 54, 38, 0.8);
+            }
+        }
+
+        .SwitchComponent-Discontrol {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background-color: rgb(250, 250, 250, 1);
+            border: solid rgb(105, 105, 105, 0.5) 1px;
+            box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            position: absolute;
+            bottom: 50%;
+
+            .SwitchComponent-faPowerDiscontrol {
+                font-size: 30px;
+                color: rgb(105, 105, 105, 0.5);
+
+            }
+        }
+
+
+
+
+
+    }
+
+    .faXmark {
+        color: rgb(105, 105, 105);
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+
+    .faXmark:hover {
+        color: rgb(247, 54, 38, 0.8);
+
+    }
+
+}

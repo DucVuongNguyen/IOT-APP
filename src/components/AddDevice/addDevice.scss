@@ -1,0 +1,104 @@
+.Background-AddBox {
+    background-color: rgb(248, 248, 248, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+
+    .AddBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+        height: fit-content;
+        position: absolute;
+        top: 30%;
+        bottom: 30%;
+        left: 42%;
+        right: 50%;
+        z-index: 99999;
+        background: white;
+        // /* fallback for old browsers */
+        border-radius: 20px;
+        padding: 20px 10px;
+        box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+
+        .Title {
+            color: rgb(67, 205, 128);
+
+            font-size: 22px;
+            padding-bottom: 10px;
+        }
+
+        .Content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 10px 0px;
+            position: relative;
+
+
+            .Label {
+                position: absolute;
+                top: 0px;
+                left: 30px;
+                color: rgb(67, 205, 128);
+
+                font-size: 18px;
+            }
+
+            .Input {
+                margin-top: 20px;
+                border-radius: 5px;
+                width: 80%;
+                height: 50px;
+                border: 1px solid rgb(67, 205, 128);
+            }
+        }
+
+        .LoginNotify {
+            color:rgb(247, 54, 38, 0.8)
+        }
+
+        .Bnt-Control {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            padding-top: 20px;
+
+            .Bnt- {
+                font-weight: bold;
+                color: white;
+                font-size: 18px;
+                width: 100px;
+                height: fit-content;
+                height: 50px;
+                border: none;
+                background: #a8ff78;
+                /* fallback for old browsers */
+                background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+                /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to right, #78ffd6, #a8ff78);
+                /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                border-radius: 10px;
+                box-shadow: 0 4px 8px 0 rgb(67, 205, 128), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                cursor: pointer;
+            }
+        }
+
+
+
+
+
+    }
+
+}

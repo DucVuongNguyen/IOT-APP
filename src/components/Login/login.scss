@@ -1,0 +1,96 @@
+.Login-Background {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #a8ff78;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #78ffd6, #a8ff78);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+
+    .LoginBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+        height: fit-content;
+
+        background:rgb(255, 255, 255, 1);
+        // /* fallback for old browsers */
+        border-radius: 20px;
+        padding: 20px 10px;
+        box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.19);
+
+        .Title {
+            color: rgb(67, 205, 128);
+            font-size: 72px;
+            padding-bottom: 50px;
+        }
+
+        .Content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0px;
+            position: relative;
+
+
+            .Label {
+                position: absolute;
+                top: 0px;
+                left: 30px;
+
+                color: rgb(67, 205, 128);
+
+                font-size: 16px;
+
+
+            }
+
+            .Input {
+                margin-top: 10px;
+                border-radius: 5px;
+                width: 80%;
+                height: 50px;
+                border: 1px solid rgb(67, 205, 128)
+            }
+        }
+
+        .LoginNotify {
+            color:rgb(247, 54, 38, 0.8)
+        }
+
+        .Bnt-login {
+            font-weight: bold;
+            color: white;
+            font-size: 24px;
+            width: 40%;
+            height: 50px;
+            border: none;
+            background: #a8ff78;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #78ffd6, #a8ff78);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgb(67, 205, 128), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            cursor: pointer;
+        }
+
+
+
+
+    }
+
+
+}

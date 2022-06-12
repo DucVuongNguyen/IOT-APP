@@ -1,0 +1,197 @@
+.Background {
+
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+    flex-direction: column;
+    overflow-x: hidden;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #78ffd6, #a8ff78);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    .Header {
+        background-color: rgb(255, 255, 255, 1);
+        width: 100%;
+        height: 10%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 24px;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+
+        .Header-start {
+            display: flex;
+            align-items: center;
+            padding-left: 50px;
+
+            .NameAccount-header {
+                color: rgb(67, 205, 128);
+                font-weight: bold;
+                cursor: pointer;
+
+
+            }
+
+            .faCaretDown {
+                color: rgb(67, 205, 128);
+
+                padding: 10px;
+                cursor: pointer;
+
+            }
+        }
+
+        .Header-end {
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            justify-content: space-between;
+            font-size: 30px;
+            width: 400px;
+
+            .Add-div {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 150px;
+
+                .FaBell-header {
+                    padding: 0px 20px;
+                    cursor: pointer;
+                    color: rgb(67, 205, 128);
+
+                }
+
+                .FaFlus-header {
+                    padding: 0px 20px;
+                    cursor: pointer;
+                    color: rgb(67, 205, 128);
+
+
+
+                }
+
+
+
+            }
+
+            .Logout-div {
+                .FaArrowRightFromBracket-header {
+                    padding: 0px 20px;
+                    cursor: pointer;
+                    color: rgb(105, 105, 105);
+
+
+                }
+
+                .FaArrowRightFromBracket-header:hover {
+                    color: rgb(247, 54, 38, 0.8);
+
+                }
+
+            }
+
+
+
+
+
+
+
+        }
+    }
+
+    .Tabs {
+        width: 100%;
+        height: 100%;
+        font-size: 24px;
+        position: relative;
+
+        .Tab-top {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 10%;
+            width: 100%;
+            position: fixed;
+            top: 70px;
+            z-index: 9999;
+            background: linear-gradient(to right, #78ffd6, #a8ff78);
+            cursor: pointer;
+            box-shadow: 0px 1px 1px 1px rgb(67, 205, 128, 0.5);
+
+
+
+            .Tab-name {
+                font-weight: bold;
+                color: white;
+
+
+
+            }
+
+            .faList {
+                padding-left: 50px;
+                color: white;
+
+
+                padding-right: 10px;
+                font-size: 17px;
+                padding-top: 3px;
+            }
+
+        }
+
+        .DeviceItem {
+            padding: 150px 0px;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: auto auto auto;
+
+        }
+
+
+    }
+
+    .Footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 10%;
+        width: 100%;
+        font-size: 18px;
+        background-color: rgb(255, 255, 255, 1);
+        position: fixed;
+        z-index: 1000;
+        bottom: 0px;
+
+        .Footer-items {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 60%;
+
+            .Footer-item {
+                cursor: pointer;
+
+                .Footer-icon {
+                    padding: 0px 5px;
+                    color: rgb(67, 205, 128);
+
+
+                }
+
+                .Footer-name {
+                    padding: 0px 5px;
+                    color: rgb(67, 205, 128);
+
+                }
+            }
+        }
+
+    }
+}
