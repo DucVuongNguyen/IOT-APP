@@ -1,10 +1,12 @@
 import axios from 'axios';
-let readData = async (NameDevice, Key) => {
+let renameDevice = async (UserName, Password, NameDevice, RenameDevice) => {
     let data;
     try {
-        await axios.post(`https://iot-server-demo.herokuapp.com/api/readData`, {
-            Key: `${Key}`,
+        await axios.post(`https://iot-server-demo.herokuapp.com/api/renameDevice`, {
+            UserName: `${UserName}`,
+            Password: `${Password}`,
             NameDevice: `${NameDevice}`,
+            RenameDevice: `${RenameDevice}`
         })
             .then(res => {
                 // console.log('checkUser');
@@ -21,4 +23,4 @@ let readData = async (NameDevice, Key) => {
 
 }
 
-export default readData;
+export default renameDevice;

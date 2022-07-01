@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush } from 'recharts';
-import './SwitchAdvance.scss';
+import './Temperature-Humidity-Sensor-Advance.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
-import { Button } from 'react-bootstrap';
+import { faTemperature4, faDroplet } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { isOpenBox } from '../../../store/action/ControlAction'
-import getTimeline from '../../../services/switch-api/getTimeline'
 import checkDevice from '../../../services/checkDevice';
+import getTimeline from '../../../services/TempHum-api/getTimeline'
 import Rename from '../../ReName/rename';
 import ChangeKey from '../../ChangeKey/changeKey';
 import UpdateKey from '../../UpdateKey/updateKey';
@@ -28,12 +27,12 @@ class Switch extends Component {
         this.state = {
             NotifyConnect: 'Đang kết nối với thiết bị!',
             isPermit: 0,
-            Status: 0,
-            pre_isError: 1,
+            Humidity: NaN,
+            Temperature: NaN,
             time_Alive: 0,
             room: `${this.props.Device.NameDevice}${this.props.Device.Key}`,
             data: [
-                { Status: 0, TimeModify: 0 },
+                { Humidity: 0, Temperature: 0, TimeModify: 0 },
 
             ],
             TimePick: new Date(),
@@ -50,40 +49,40 @@ class Switch extends Component {
 
 
     componentDidMount() {
+        console.log("TemperatureHumiditySensor Advance component render")
         this.socket = io.connect("https://iot-server-demo.herokuapp.com");
-        console.log("Switch Advance component render")
-        console.log(`Switch ${this.props.Device.NameDevice} join room : ${this.props.Device.NameDevice}${this.props.Device.Key}`)
-        this.socket.emit("Switch", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-        this.socket.emit("Switch", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-        this.socket.emit("Switch", { function: 'getTimeline', NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, Date: this.state.Date, Month: this.state.Month, Year: this.state.Year, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+        console.log(`TemperatureHumiditySensor Advance ${this.props.Device.NameDevice} join room : ${this.props.Device.NameDevice}${this.props.Device.Key}`)
+        this.socket.emit("TemperatureHumiditySensor", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+        this.socket.emit("TemperatureHumiditySensor", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+        this.socket.emit("TemperatureHumiditySensor", { function: 'getTimeline', NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, Date: this.state.Date, Month: this.state.Month, Year: this.state.Year, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+
+
         this.socket.on("isDeviceConnect", async (data) => {
-
             this.setState({
-                isPermit: Number(data.isDeviceConnect),
+                isPermit: 1,
                 NotifyConnect: `Cường độ tín hiệu: ${data.RSSI}`,
-                time_Alive: data.time_Alive,
+                time_Alive: Number(data.time_Alive),
             })
-            // console.log(`this.state.time_Alive Advance: ${this.state.time_Alive}`)
-            // console.log(`this.state.time_Alive Advance: ${Number(data.time_Alive)}`)
-            // console.log(`data.isDeviceConnect: ${data.isDeviceConnect}`)
-
         });
+
         this.socket.on("SyncStatus", async (data) => {
-            console.log(`SyncStatus`);
-            console.log(`this.props.Device.NameDevice ${this.props.Device.NameDevice}`);
-            console.log(`SyncStatus ${data.DataResult}`);
-            console.log(`data.isError ${data.isError}`);
+            // console.log(`this.props.Device.NameDevice ${this.props.Device.NameDevice}`);
+            // console.log(`Humidity ${data.Humidity}`);
+            // console.log(`Temperature ${data.Temperature}`);
+            // console.log(`data.isError ${data.isError}`);
             if (!Number(data.isError)) {
                 this.setState({
-                    Status: Number(data.DataResult),
+                    Humidity: Number(data.Humidity).toFixed(2),
+                    Temperature: Number(data.Temperature).toFixed(2),
                 })
                 let response = await getTimeline(this.props.Device.NameDevice, this.props.Device.Key, this.state.Date, this.state.Month, this.state.Year);
-                console.log(`response.message ${response.message}`)
+                console.log(`response.message ${response.DataResult}`)
                 if (!response.isError) {
                     this.setState({
                         data: response.DataResult
                     })
                 }
+
             }
             else {
                 this.setState({
@@ -100,11 +99,11 @@ class Switch extends Component {
             console.log(`data.isError ${data.isError}`);
             if (!Number(data.isError)) {
                 this.setState({
-                    Status: Number(data.DataResult),
+                    Humidity: Number(data.Humidity).toFixed(2),
+                    Temperature: Number(data.Temperature).toFixed(2),
                 })
             }
         });
-
         this.socket.on("updateDataTimeline", async (data) => {
             console.log(`updateDataTimeline`)
             // console.log(`${data.DataResult}`)
@@ -124,44 +123,30 @@ class Switch extends Component {
                 })
                 let response = await checkDevice(this.props.Device.NameDevice, this.props.Device.Key);
                 if (!response.isError) {
-                    this.socket.emit("Switch", { function: 'leave_room', room: this.state.room });
-                    this.socket.emit("Switch", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-                    this.socket.emit("Switch", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-                    this.socket.emit("Switch", { function: 'getTimeline', NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, Date: this.state.Date, Month: this.state.Month, Year: this.state.Year, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-
+                    this.socket.emit("TemperatureHumiditySensor", { function: 'leave_room', room: this.state.room });
+                    this.socket.emit("TemperatureHumiditySensor", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+                    this.socket.emit("TemperatureHumiditySensor", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+                    this.socket.emit("TemperatureHumiditySensor", { function: 'getTimeline', NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, Date: this.state.Date, Month: this.state.Month, Year: this.state.Year, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
                     this.setState({
                         room: `${this.props.Device.NameDevice}${this.props.Device.Key}`
                     })
-    
                 }
                 else {
                     this.setState({
                         NotifyConnect: 'Key thiết bị đã được thay đổi!',
                     })
                 }
-
             }
         }, 1000)
+
     }
     componentWillUnmount() {
         this.socket.disconnect();
         clearInterval(this.MyInterval);
-        console.log(`componentWillUnmount`)
+        console.log(`componentWillUnmount ${this.props.Device.NameDevice}`)
     }
 
 
-
-    handleSwitch = async (event) => {
-        console.log(`handleSwitch`)
-
-        if (this.state.isPermit) {
-            let status_pre = this.state.Status;
-            this.socket.emit("Switch", { function: 'AppToDevice', Status: Number(!status_pre), NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-            this.setState({
-                Status: Number(!status_pre),
-            })
-        }
-    }
 
     handleClose_Btn = (event) => {
         this.socket.disconnect();
@@ -170,7 +155,6 @@ class Switch extends Component {
         console.log(payload)
         this.props.isOpenBox(payload);
     }
-
     handleRename = (event) => {
         console.log(`handleRename`)
         let payload = { ...this.props.ControlAction_Redux }
@@ -216,8 +200,6 @@ class Switch extends Component {
             })
         }
 
-
-
     }
 
 
@@ -228,9 +210,9 @@ class Switch extends Component {
                 <React.Fragment>
 
 
-                    <div className='Background-SwitchAdvance'>
-                        <div className='Box-SwitchAdvance'>
-                            <div className='Chart-SwitchAdvance'>
+                    <div className='Background-TemperatureHumiditySensorAdvance'>
+                        <div className='Box'>
+                            <div className='Chart'>
 
                                 <input className='DatePicker' type="date" onChange={(event) => this.PickTime(event)}></input>
                                 <ResponsiveContainer className="chart">
@@ -242,32 +224,63 @@ class Switch extends Component {
                                         <CartesianGrid strokeDasharray="1 1" />
                                         <Tooltip />
                                         <Legend />
-                                        <Line connectNulls dataKey="Status" stroke="#82ca9d" fill="#82ca9d" dot={false} activeDot={{ r: 5 }} />
+                                        <Line connectNulls dataKey="Humidity" stroke="#4682B4" fill="#4682B4" dot={false} activeDot={{ r: 5 }} />
+                                        <Line connectNulls dataKey="Temperature" stroke="#A00000" fill="#A00000" dot={false} activeDot={{ r: 5 }} />
                                         <Brush
                                             width={800}
                                             height={10} />
+
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
-                            <div className='Setting-SwitchAdvance'>
-                                <div className='Names-SwitchAdvance'>
+                            <div className='Setting'>
+                                <div className='Names'>
 
-                                    <div className='NameDeviceCustom_Name-SwitchAdvance' onClick={() => { this.handleRename() }}>{this.props.Device.NameDeviceCustom}</div>
-                                    <div className='NameDevice_Name-SwitchAdvance' > {this.props.Device.NameDevice} </div>
+                                    <div className='NameDeviceCustom_Name' onClick={() => { this.handleRename() }}>{this.props.Device.NameDeviceCustom}</div>
+                                    <div className='NameDevice_Name'> {this.props.Device.NameDevice} </div>
+
                                 </div>
 
-                                <div className='Control-SwitchAdvance'>
-                                    {this.state.Status
-                                        ? <Button className='SwitchOn-SwitchAdvance' variant="outline-success" onClick={() => { this.handleSwitch() }}><FontAwesomeIcon className='faPowerOn-SwitchAdvance' icon={faPowerOff} /></Button>
-                                        : <Button className='SwitchOff-SwitchAdvance' variant="outline-success" onClick={() => { this.handleSwitch() }}><FontAwesomeIcon className='faPowerOff-SwitchAdvance' icon={faPowerOff} /></Button>}
-                                    <DisSwitch isPermit={this.state.isPermit}></DisSwitch>
-                                    <NotifyConnectSwitchComponent NotifyConnect={this.state.NotifyConnect} isPermit={this.state.isPermit}></NotifyConnectSwitchComponent>
+                                <div className='Control'>
+                                    {
+                                        this.state.isPermit === 1 &&
+
+                                        <React.Fragment>
+                                            <div className='Temperature'>
+                                                <FontAwesomeIcon className='faTemperature4' icon={faTemperature4} />
+                                                <span className='Temp-Text'>{this.state.Temperature}°C</span>
+
+
+                                            </div>
+                                            <div className='Humidity'>
+                                                <FontAwesomeIcon className='faDroplet' icon={faDroplet} />
+                                                <span className='Hum-Text'>{this.state.Humidity}%</span>
+                                            </div>
+                                            <span className='Notify'>{this.state.NotifyConnect}</span>
+                                        </React.Fragment>
+                                    }
+                                    {
+                                        this.state.isPermit === 0 &&
+
+                                        <React.Fragment>
+                                            <div className='Temperature-dis'>
+                                                <FontAwesomeIcon className='faTemperature4-dis' icon={faTemperature4} />
+                                                <span className='Temp-Text-dis'>{this.state.Temperature}°C</span>
+
+
+                                            </div>
+                                            <div className='Humidity-dis'>
+                                                <FontAwesomeIcon className='faDroplet-dis' icon={faDroplet} />
+                                                <span className='Hum-Text-dis'>{this.state.Humidity}%</span>
+                                            </div>
+                                            <span className='Notify-dis'>{this.state.NotifyConnect}</span>
+                                        </React.Fragment>
+                                    }
 
                                 </div>
 
 
                                 <div className='Key-SwitchAdvance'>
-
                                     <span className='ChangeKey' onClick={() => { this.handleChangeKey() }}> Thay đổi Key
 
                                     </span>
@@ -301,41 +314,6 @@ class Switch extends Component {
 
 
     }
-}
-
-
-const NotifyConnectSwitchComponent = (props) => {
-    //Kiểm tra giá trị của props
-    //Trả về JSX để hiển thị
-    if (props.isPermit) {
-        return (
-            <span className='NotifyConnect-SwitchAdvance'>{props.NotifyConnect}</span>
-        )
-    }
-    else {
-        return (
-            <span className='NotifyDisconnect-SwitchAdvance'>{props.NotifyConnect}</span>
-        )
-    }
-
-
-}
-
-
-const DisSwitch = (props) => {
-    //Kiểm tra giá trị của props
-    //Trả về JSX để hiển thị
-    if (!props.isPermit) {
-
-        return (
-            <Button className='Discontrol-SwitchAdvance' variant="outline-success"><FontAwesomeIcon className='faPowerDiscontrol-SwitchAdvance' icon={faPowerOff} /></Button>
-        )
-    }
-    else {
-        return null;
-    }
-
-
 }
 
 const mapStateToProps = (state) => {

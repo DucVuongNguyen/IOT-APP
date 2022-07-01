@@ -2,7 +2,7 @@ import axios from 'axios';
 let getTimeline = async (NameDevice, Key, Date, Month, Year) => {
     let data;
     try {
-        await axios.post(`https://iot-server-demo.herokuapp.com/api/getTimeline`, {
+        await axios.post(`https://iot-server-demo.herokuapp.com/api/Switch/getTimeline`, {
             NameDevice: `${NameDevice}`,
             Key: `${Key}`,
             Date: `${Date}`,

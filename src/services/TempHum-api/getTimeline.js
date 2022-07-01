@@ -1,10 +1,13 @@
 import axios from 'axios';
-let loadSchedule = async (NameDevice, Key) => {
+let getTimeline = async (NameDevice, Key, Date, Month, Year) => {
     let data;
     try {
-        await axios.post(`https://iot-server-demo.herokuapp.com/api/loadSchedule`, {
-            Key: `${Key}`,
+        await axios.post(`https://iot-server-demo.herokuapp.com/api/TemperatureHumiditySensor/getTimeline`, {
             NameDevice: `${NameDevice}`,
+            Key: `${Key}`,
+            Date: `${Date}`,
+            Month: `${Month}`,
+            Year: `${Year}`,
         })
             .then(res => {
                 // console.log('checkUser');
@@ -21,4 +24,4 @@ let loadSchedule = async (NameDevice, Key) => {
 
 }
 
-export default loadSchedule;
+export default getTimeline;

@@ -1,4 +1,4 @@
-.Background-SwitchAdvance {
+.Background-TemperatureHumiditySensorAdvance {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,7 +13,7 @@
     border-radius: 20px;
     z-index: 500;
 
-    .Box-SwitchAdvance {
+    .Box {
         display: flex;
         align-items: center;
         flex-direction: row;
@@ -24,7 +24,7 @@
         border-radius: 20px;
         overflow: hidden;
 
-        .Chart-SwitchAdvance {
+        .Chart {
             width: 80%;
             height: 100%;
             border-radius: 20px;
@@ -50,12 +50,11 @@
                 .LineChart {
                     margin: 10px !important;
                     // padding: 10px !important;
-
                 }
             }
         }
 
-        .Setting-SwitchAdvance {
+        .Setting {
             display: flex;
             flex-direction: column;
             position: relative;
@@ -63,7 +62,7 @@
             width: 30%;
             align-items: center;
 
-            .Names-SwitchAdvance {
+            .Names {
                 display: flex;
                 flex-direction: column;
                 position: absolute;
@@ -74,123 +73,147 @@
 
 
 
-                .NameDeviceCustom_Name-SwitchAdvance {
+                .NameDeviceCustom_Name {
                     font-size: 36px;
                     color: rgb(24, 154, 70, 0.6);
                     font-weight: bold;
                     text-transform: uppercase;
                     cursor: pointer;
+
+
                 }
 
 
 
-                .NameDevice_Name-SwitchAdvance {
+                .NameDevice_Name {
                     font-size: 18px;
                     color: rgb(105, 105, 105, 0.5);
                     text-transform: uppercase;
 
                 }
+
             }
 
-            .Control-SwitchAdvance {
-                margin: 150px 0px 5px 0px;
+            .Control {
+                margin: 150px 0px 0px 0px;
                 width: 50%;
                 height: 30%;
                 display: flex;
                 flex-direction: column;
                 position: relative;
                 align-items: center;
+                justify-content: center;
                 border: solid rgb(24, 154, 70, 0.6) 3px;
                 border-radius: 20px;
 
+                .Temperature {
+                    width: 100%;
+                    display: flex;
+                    margin-top: 10px;
+                    flex-direction: row;
+                    align-items: center;
+                    align-content: space-between;
+                    justify-content: center;
 
-                .NotifyConnect-SwitchAdvance {
+                    .faTemperature4 {
+                        color: rgb(24, 154, 70, 0.6);
+                        margin-right: 5px;
+                    }
+
+                    .Temp-Text {
+                        color: rgb(24, 154, 70, 0.6);
+                        font-size: 24px;
+                        font-weight: bolder;
+                    }
+                }
+
+                .Humidity {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    align-content: space-between;
+                    justify-content: center;
+                    margin: 10px 0px;
+
+                    .faDroplet {
+                        color: rgb(24, 154, 70, 0.6);
+                        margin-right: 5px;
+
+                    }
+
+                    .Hum-Text {
+                        color: rgb(24, 154, 70, 0.6);
+                        font-size: 24px;
+                        font-weight: bolder;
+                    }
+                }
+
+                .Notify {
                     width: 100%;
                     height: 30%;
                     overflow: hidden;
                     font-size: 14px;
                     text-align: center;
                     color: rgb(24, 154, 70, 0.6);
-                    position: absolute;
                     bottom: 5px;
-
 
                 }
 
-                .NotifyDisconnect-SwitchAdvance {
+                .Temperature-dis {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 10px;
+                    align-items: center;
+                    align-content: space-between;
+                    justify-content: center;
+                    color: rgb(105, 105, 105, 0.5);
+
+
+
+                    .faTemperature4-dis {
+                        margin-right: 5px;
+                    }
+
+                    .Temp-Text-dis {
+                        font-size: 24px;
+                        font-weight: bolder;
+                    }
+                }
+
+                .Humidity-dis {
+                    width: 100%;
+                    color: rgb(105, 105, 105, 0.5);
+
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    align-content: space-between;
+                    justify-content: center;
+                    margin: 10px 0px;
+
+                    .faDroplet-dis {
+                        margin-right: 5px;
+
+                    }
+
+                    .Hum-Text-dis {
+                        font-size: 24px;
+                        font-weight: bolder;
+                    }
+                }
+
+                .Notify-dis {
+                    color: rgb(247, 54, 38, 0.8);
                     width: 100%;
                     height: 30%;
                     overflow: hidden;
                     font-size: 14px;
                     text-align: center;
-                    color: rgb(247, 54, 38, 0.8);
-                    position: absolute;
                     bottom: 5px;
-
                 }
 
-                .SwitchOn-SwitchAdvance {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 100%;
-                    background-color: rgb(250, 250, 250, 1);
-                    border: solid rgb(24, 154, 70, 0.6) 1px;
-                    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    cursor: pointer;
-                    position: absolute;
-                    bottom: 50%;
-
-
-
-                    .faPowerOn-SwitchAdvance {
-                        font-size: 30px;
-                        color: rgb(24, 154, 70, 0.6);
-                    }
-                }
-
-                .SwitchOff-SwitchAdvance {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 100%;
-                    background-color: rgb(250, 250, 250, 1);
-                    border: solid rgb(247, 54, 38, 0.8)1px;
-                    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
-                    cursor: pointer;
-                    justify-content: center;
-                    align-items: center;
-                    display: flex;
-                    position: absolute;
-                    bottom: 50%;
-
-                    .faPowerOff-SwitchAdvance {
-                        font-size: 30px;
-                        color: rgb(247, 54, 38, 0.8);
-                    }
-                }
-
-                .Discontrol-SwitchAdvance {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 100%;
-                    background-color: rgb(250, 250, 250, 1);
-                    border: solid rgb(105, 105, 105, 0.5) 1px;
-                    box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
-                    cursor: pointer;
-                    justify-content: center;
-                    align-items: center;
-                    display: flex;
-                    position: absolute;
-                    bottom: 50%;
-
-                    .faPowerDiscontrol-SwitchAdvance {
-                        font-size: 30px;
-                        color: rgb(105, 105, 105, 0.5);
-
-                    }
-                }
             }
 
             .Btn-SwitchAdvance {
@@ -227,11 +250,12 @@
         .Key-SwitchAdvance {
             font-size: 14px;
             margin: 50px 10px 0px 10px;
-            display: flex;
             text-align: center;
-            justify-content: space-around;
+            display: flex;
             flex-direction: row;
             width: 50%;
+            justify-content: space-around;
+
             .ChangeKey {
                 cursor: pointer;
                 color: rgb(105, 105, 105, 0.5);

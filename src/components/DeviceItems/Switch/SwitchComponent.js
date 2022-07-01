@@ -5,9 +5,11 @@ import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPowerOff } from '@fortawesome/free-solid-svg-icons';
 import deleteDevice from '../../../services/deleteDevice';
+import checkDevice from '../../../services/checkDevice';
 import { updateUser } from '../../../store/action/userAction'
 import { connect } from 'react-redux';
-import { isOpenAdvanceBox } from '../../../store/action/ControlAction';
+import { isOpenBox } from '../../../store/action/ControlAction';
+import toast, { Toaster } from 'react-hot-toast';
 
 import io from "socket.io-client";
 
@@ -17,44 +19,37 @@ class SwitchComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            NotifyConnect: 'Thiết bị mất kết nối!',
+            NotifyConnect: 'Đang kết nối với thiết bị!',
             isPermit: 0,
             Status: 0,
-            pre_isError: 0,
             time_Alive: 0,
+            room: `${this.props.Device.NameDevice}${this.props.Device.Key}`
         };
 
     }
     componentDidMount() {
+        toast.remove();
         this.socket = io.connect("https://iot-server-demo.herokuapp.com");
         console.log("Switch component render")
         console.log(`Switch ${this.props.Device.NameDevice} join room : ${this.props.Device.NameDevice}${this.props.Device.Key}`)
-
-        this.socket.emit("join_room", { room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-
-        this.socket.emit("initSwitchSyncReq", { room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
-
+        this.socket.emit("Switch", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+        this.socket.emit("Switch", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
 
         this.socket.on("isDeviceConnect", async (data) => {
-
-            // console.log(`Thời gian nhận từ Server ${data.time_Alive}`);
-            // console.log(`this.props.Device.NameDevice ${this.props.Device.NameDevice}`);
-            
-
-
             this.setState({
-                isPermit: Number(data.isDeviceConnect),
-                NotifyConnect: data.NotifyConnect,
+                isPermit: 1,
+                NotifyConnect: `Cường độ tín hiệu: ${data.RSSI}`,
                 time_Alive: Number(data.time_Alive),
             })
-            // console.log(`this.state.isPermit ${this.state.isPermit}`);
-            // console.log(`Thời gian nhận đã cập nhật ${this.state.time_Alive}`);
+            console.log(`data.room ${data.room}`);
+            // console.log(`${this.props.Device.NameDevice}${this.props.Device.Key}-time_Alive Server ${data.time_Alive}`);
+
         });
 
-        this.socket.on("updateStatusSwitch", async (data) => {
+        this.socket.on("SyncStatus", async (data) => {
             // console.log(`this.props.Device.NameDevice ${this.props.Device.NameDevice}`);
-            // console.log(`updateStatusSwitch ${data.DataResult}`);
-            // console.log(`data.isError ${data.isError}`);
+            // console.log(`SyncStatus ${data.DataResult}`);
+            // console.log(`data.isError ${data.room}`);
             if (!Number(data.isError)) {
                 this.setState({
                     Status: Number(data.DataResult),
@@ -67,17 +62,48 @@ class SwitchComponent extends Component {
                 })
                 console.log(data.message)
             }
-            // console.log(`this.state.Status ${this.state.Status}`);
 
         });
-
-
-        this.MyInterval = setInterval(() => {
-            // console.log(`Thời gian gửi lên checkAlive ${this.state.time_Alive} ${this.props.Device.NameDevice}`)
-            if (this.props.ControlAction_Redux.AdvanceBox.isOpen === 0) {
-                this.socket.emit("checkAlive", { room: `${this.props.Device.NameDevice}${this.props.Device.Key}`, time_Alive: this.state.time_Alive });
+        this.socket.on("InitStatusValue", async (data) => {
+            console.log(`InitStatusValue`);
+            console.log(`data.DataResult ${data.DataResult}`);
+            console.log(`data.isError ${data.isError}`);
+            if (!Number(data.isError)) {
+                this.setState({
+                    Status: Number(data.DataResult),
+                })
             }
+        });
 
+        this.MyInterval = setInterval(async () => {
+            let time_ = new Date().getTime();
+            let timer = (Number(time_) - Number(this.state.time_Alive)) / 1000
+            // console.log(`${this.props.Device.NameDevice}${this.props.Device.Key}-this.state.time_Alive ${this.state.time_Alive}`);
+            // console.log(`${this.props.Device.NameDevice}${this.props.Device.Key}-time_Alive Server ${this.state.time_Alive}`)
+            console.log(`${this.props.Device.NameDevice}${this.props.Device.Key}-timer: ${timer}`)
+            // console.log(`this.state.time_Alive: ${this.state.time_Alive}`)
+            if (timer > 3) {
+                this.setState({
+                    isPermit: 0,
+                    NotifyConnect: 'Đang kết nối với thiết bị!',
+                })
+                let response = await checkDevice(this.props.Device.NameDevice, this.props.Device.Key);
+                if (!response.isError) {
+                    this.socket.emit("Switch", { function: 'leave_room', room: this.state.room });
+                    this.socket.emit("Switch", { function: 'join_room', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+                    this.socket.emit("Switch", { function: 'GetInitStatus', room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+                    this.setState({
+                        room: `${this.props.Device.NameDevice}${this.props.Device.Key}`
+                    })
+                    
+
+                }
+                else {
+                    this.setState({
+                        NotifyConnect: 'Key thiết bị đã được thay đổi!',
+                    })
+                }
+            }
         }, 1000)
 
 
@@ -95,10 +121,11 @@ class SwitchComponent extends Component {
 
 
     handleSwitch = async (event) => {
+
         // this.socket.connect()
         if (this.state.isPermit) {
             let status_pre = this.state.Status;
-            this.socket.emit("handleSwitch", { Status: Number(!status_pre), NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
+            this.socket.emit("Switch", { function: 'AppToDevice', Status: Number(!status_pre), NameDevice: `${this.props.Device.NameDevice}`, Key: `${this.props.Device.Key}`, room: `${this.props.Device.NameDevice}${this.props.Device.Key}` });
             this.setState({
                 Status: Number(!status_pre),
             })
@@ -111,43 +138,40 @@ class SwitchComponent extends Component {
 
 
 
-    handle_deleteDevice = async (event) => {    
-        let isError = 1;
-        console.log(`this.props.User_Redux.user.UserName: ${this.props.User_Redux.user.UserName}`);
-        console.log(`this.props.User_Redux.user.Password: ${this.props.User_Redux.user.Password}`);
-        console.log(`this.props.Device.NameDevice: ${this.props.Device.NameDevice}`);
-        let response_;
-        while (isError) {
-            let response = await deleteDevice(this.props.User_Redux.user.UserName, this.props.User_Redux.user.Password, this.props.Device.NameDevice);
-            isError = response.isError;
-            console.log(`deleteData`);
-            response_ = response;
-        }
-        if (!isError) {
-            delete response_.isError;
-            let payload = response_;
+    handle_deleteDevice = async (event) => {
+        this.socket.disconnect();
+        toast.loading('Loading...');
+        let response = await deleteDevice(this.props.User_Redux.user.UserName, this.props.User_Redux.user.Password, this.props.Device.NameDevice);
+
+        if (!response.isError) {
+            let payload = { ...this.props.User_Redux }
+            delete response.isError;
+            payload.message = response.message;
+            payload.user = response.user;
             this.props.updateUser(payload);
         }
-
-
-
-
-
+        toast.remove();
     }
 
     handleOpenAdvance = (event) => {
-        let payload = { isOpen: 1, Device: this.props.Device }
-        this.props.isOpenAdvanceBox(payload);
+        let payload = { ...this.props.ControlAction_Redux }
+        payload.AdvanceBox.isOpen = 1
+        payload.AdvanceBox.Device = this.props.Device
+        console.log(payload)
+        // let payload = { isOpen: 1, Device: this.props.Device }
+        this.props.isOpenBox(payload);
     }
     render() {
         // console.log(`this.props.Device.NameDevice: ${this.props.Device.NameDevice}`)
         // console.log(`this.state.Status: ${this.state.Status}`)
-        // console.log(`Thời gian nhận đã cập nhật ${this.state.time_Alive}`);
-
+        // console.log(`Thời gian nhận đã cập nhật ${this.state.time_Alive}`)
 
         return (
             <React.Fragment>
-
+                <Toaster className="Toaster"
+                    position="top-center"
+                    reverseOrder={false}
+                />
                 <div className='SwitchComponent-Box'>
                     <div className='SwitchComponent-Left' onClick={() => { this.handleOpenAdvance() }}>
                         <img className='SwitchComponent-img' src={img} alt={"img"} />
@@ -166,7 +190,7 @@ class SwitchComponent extends Component {
                     </div>
                     <FontAwesomeIcon className='faXmark' icon={faXmark} onClick={() => { this.handle_deleteDevice() }} />
                 </div>
-                
+
 
             </React.Fragment>
         )
@@ -220,7 +244,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatToProps = (dispatch) => {
     return {
-        isOpenAdvanceBox: (payload) => dispatch(isOpenAdvanceBox(payload)),
+        isOpenBox: (payload) => dispatch(isOpenBox(payload)),
         updateUser: (payload) => dispatch(updateUser(payload))
     }
 

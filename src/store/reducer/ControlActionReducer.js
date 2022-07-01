@@ -1,6 +1,8 @@
 const initialState = {
     isOpenAddBox: 0,
-    // isOpenAdvanceBox : 0,
+    isOpenRenameBox: 0,
+    isOpenChangeKeyBox: 0,
+    isOpenUpdateKeyBox: 0,
     AdvanceBox: {
         isOpen: 0,
     },
@@ -8,23 +10,13 @@ const initialState = {
 const ControlAction = (state = initialState, action) => {
     console.log(`>>> old state DeviceReducer redux --- `, state);
     switch (action.type) {
-        case 'OPEN_ADD_DEVICE_BOX': {
-            let vars = { ...state }
-            vars.isOpenAddBox = action.payload;
+        case 'OPEN_BOX': {
+            let vars = action.payload;
             state = vars
             console.log(`>>> new state DeviceReducer redux --- `, state);
             return state;
 
         }
-        case 'OPEN_ADVANCE_BOX': {
-            let vars = { ...state }
-            vars.AdvanceBox = action.payload;
-            state = vars
-            console.log(`>>> new state DeviceReducer redux --- `, state);
-            return state;
-
-        }
-
         default:
             return state
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
-let checkAlive = async (NameDevice, Key) => {
+let signup = async (UserName, Password) => {
     let data;
     try {
-        await axios.post(`https://iot-server-demo.herokuapp.com/api/checkAlive`, {
-            Key: `${Key}`,
-            NameDevice: `${NameDevice}`,
+        await axios.post(`https://iot-server-demo.herokuapp.com/api/Signup`, {
+            UserName: `${UserName}`,
+            Password: `${Password}`,
         })
             .then(res => {
                 // console.log('checkUser');
@@ -21,4 +21,4 @@ let checkAlive = async (NameDevice, Key) => {
 
 }
 
-export default checkAlive;
+export default signup;

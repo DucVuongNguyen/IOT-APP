@@ -5,11 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPlus, faMobileScreen, faMagic, faUser, faArrowRightFromBracket, faList, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { loginUser } from '../../store/action/userAction';
-import { isOpenAddBox, isOpenAdvanceBox } from '../../store/action/ControlAction'
+import { isOpenBox } from '../../store/action/ControlAction'
 import { Navigate } from "react-router-dom";
 
 import SwitchComponent from '../DeviceItems/Switch/SwitchComponent';
 import SwitchAdvance from '../DeviceItems/Switch/SwitchAdvance';
+import TemperatureHumiditySensorComponent from "../DeviceItems/Temperature-Humidity-Sensor/Temperature-Humidity-Sensor-Component";
+import TemperatureHumiditySensorAdvance from "../DeviceItems/Temperature-Humidity-Sensor/Temperature-Humidity-Sensor-Advance";
+
+import toast from 'react-hot-toast';
 
 
 
@@ -24,6 +28,8 @@ class Home extends React.Component {
 
 
         }
+        toast.remove();
+
     }
 
     handleLogout = (event) => {
@@ -31,15 +37,14 @@ class Home extends React.Component {
         // console.log(`username: ${this.state.username}`);
         // console.log(`password: ${this.state.password}`);
         this.props.User(logout)
-        let payload = { isOpen: 0 }
-        this.props.isOpenAdvanceBox(payload);
 
     }
 
     handleAddDevice = (event) => {
-        let payload = 1
-        this.props.isOpenAddBox(payload)
-        // console.log(`this.props.Device_Redux.isOpenAddBox: ${this.props.Device_Redux.isOpenAddBox}`)
+        let payload = { ...this.props.ControlAction_Redux }
+        payload.isOpenAddBox = 1
+        console.log(payload)
+        this.props.isOpenBox(payload)
 
     }
 
@@ -48,10 +53,11 @@ class Home extends React.Component {
 
         if (this.props.User_Redux.checkLogin === 1) {
             console.log(`Home component re-render`)
-
             return (
                 <React.Fragment>
                     <AddDevice></AddDevice>
+                    {toast.remove()}
+
 
                     <div className="Background">
                         {/* header */}
@@ -74,6 +80,7 @@ class Home extends React.Component {
 
                         </div>
                         {/* Tabs */}
+
                         <div className="Tabs">
 
                             <div className="Tab-top">
@@ -86,29 +93,22 @@ class Home extends React.Component {
                                 {
                                     this.props.User_Redux.user.Devices.length > 0 &&
                                     this.props.User_Redux.user.Devices.map((device, index) => {
-                                        console.log(`${device.NameDevice}`)
+                                    console.log(`${device.NameDevice}`)
                                         return (
-                                            <React.Fragment>
-                                                <ShowDevices key={device.NameDevice} Device={device}></ShowDevices>
-                                            </React.Fragment>
-                                        )
+                                <React.Fragment>
+                                    <ShowDevices key={device.NameDevice} Device={device}></ShowDevices>
+                                </React.Fragment>
+                                )
 
                                     }
-                                    )
+                                )
 
 
                                 }
-
-
-
 
                                 {Number(this.props.ControlAction_Redux.AdvanceBox.isOpen) === 1 &&
-                                    < SwitchAdvance Device={this.props.ControlAction_Redux.AdvanceBox.Device}></SwitchAdvance>
+                                    <ShowAdvance Device={this.props.ControlAction_Redux.AdvanceBox.Device}></ShowAdvance>
                                 }
-
-
-
-
 
                             </div>
                         </div>
@@ -136,6 +136,7 @@ class Home extends React.Component {
             )
         }
         else {
+            toast.remove();
             return (
                 <React.Fragment>
                     <Logout></Logout>
@@ -150,27 +151,53 @@ class Home extends React.Component {
 }
 
 const Logout = (props) => {
-    //Kiểm tra giá trị của props
-    if (!props.checkLogin) {
-        //Trả về JSX để hiển thị
-        return (
-            <Navigate to="/Login" replace={true} />
-        )
-    }
+    return (
+        <Navigate to="/Login" replace={true} />
+    )
 }
 
 
 const ShowDevices = (props) => {
     let Device = props.Device
-    if (Device.Type === 'Switch') {
-        //Trả về JSX để hiển thị
-        return (
-            <SwitchComponent Device={Device}></SwitchComponent>
-        )
-    } else {
-        return null;
+    switch (Device.Type) {
+        case 'Switch': {
+            return (
+                <SwitchComponent Device={Device}></SwitchComponent>
+            )
+        }
+        case 'TemperatureHumiditySensor': {
+            return (
+                <TemperatureHumiditySensorComponent Device={Device}></TemperatureHumiditySensorComponent>
+            )
+        }
+        default: {
+            return null
+        }
     }
+
 }
+
+const ShowAdvance = (props) => {
+    let Device = props.Device
+    switch (Device.Type) {
+        case 'Switch': {
+            return (
+                < SwitchAdvance Device={Device}></SwitchAdvance>
+            )
+        }
+        case 'TemperatureHumiditySensor': {
+            return (
+                <TemperatureHumiditySensorAdvance Device={Device}></TemperatureHumiditySensorAdvance>
+            )
+        }
+        default: {
+            return null
+        }
+    }
+
+}
+
+
 
 
 const mapStateToProps = (state) => {
@@ -183,9 +210,7 @@ const mapStateToProps = (state) => {
 const mapDispatToProps = (dispatch) => {
     return {
         User: (payload) => dispatch(loginUser(payload)),
-        isOpenAddBox: (payload) => dispatch(isOpenAddBox(payload)),
-        isOpenAdvanceBox: (payload) => dispatch(isOpenAdvanceBox(payload)),
-
+        isOpenBox: (payload) => dispatch(isOpenBox(payload))
     }
 
 }

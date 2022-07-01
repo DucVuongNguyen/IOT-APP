@@ -1,4 +1,4 @@
-.Login-Background {
+.Signup-Background {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -13,7 +13,7 @@
 
 
 
-    .LoginBox {
+    .Box {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -32,7 +32,8 @@
             font-size: 72px;
             padding-bottom: 20px;
         }
-        .placeholde{
+
+        .placeholde {
             color: rgb(67, 205, 128);
             font-size: 16px;
             padding-bottom: 30px;
@@ -69,7 +70,7 @@
             }
         }
 
-        .LoginNotify {
+        .Notify {
             color: rgb(247, 54, 38, 0.8)
         }
 
@@ -96,7 +97,6 @@
                 cursor: pointer;
             }
         }
-
 
 
 

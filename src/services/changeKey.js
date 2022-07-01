@@ -1,9 +1,12 @@
 import axios from 'axios';
-let updateKey = async (NameDevice, NewKey) => {
+let changeKey = async (UserName, Password,NameDevice, Key, NewKey) => {
     let data;
     try {
-        await axios.post(`https://iot-server-demo.herokuapp.com/api/updateKey`, {
+        await axios.post(`https://iot-server-demo.herokuapp.com/api/changeKey`, {
+            UserName: `${UserName}`,
+            Password: `${Password}`,
             NameDevice: `${NameDevice}`,
+            Key: `${Key}`,
             NewKey: `${NewKey}`,
         })
             .then(res => {
@@ -21,4 +24,4 @@ let updateKey = async (NameDevice, NewKey) => {
 
 }
 
-export default updateKey;
+export default changeKey;

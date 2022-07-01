@@ -12,9 +12,7 @@ const userReducer = (state = initialState, action) => {
         }
 
         case 'UPDATE_USER': {
-            let pre_checkLogin = state.checkLogin;
             state = action.payload;
-            state.checkLogin = Number(`${pre_checkLogin}`)
             console.log(`>>> new state userReducer redux ---  --- `, state);
             return state;
 

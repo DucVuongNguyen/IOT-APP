@@ -1,11 +1,11 @@
 import React from "react";
 import './addDevice.scss';
 import { updateUser } from '../../store/action/userAction';
-import { isOpenAddBox } from '../../store/action/ControlAction'
+import { isOpenBox } from '../../store/action/ControlAction'
 import { connect } from 'react-redux';
 import addDevice from '../../services/addDevice';
 import checkDevice from '../../services/checkDevice';
-
+import toast, { Toaster } from 'react-hot-toast';
 
 
 class AddDevice extends React.Component {
@@ -16,7 +16,7 @@ class AddDevice extends React.Component {
             Key: '',
             Notification: ''
         }
-
+        toast.remove();
     }
 
     handleOnChangeNameDevice = (event) => {
@@ -37,8 +37,14 @@ class AddDevice extends React.Component {
     }
 
     handleCancel = (event) => {
-        let payload = 0
-        this.props.isOpenAddBox(payload)
+        let payload = { ...this.props.ControlAction_Redux }
+        payload.isOpenAddBox = 0
+        console.log(payload)
+        this.props.isOpenBox(payload)
+        this.setState({
+            Notification: ''
+        })
+
     }
 
     handleAddDevice = async (event) => {
@@ -46,19 +52,23 @@ class AddDevice extends React.Component {
         console.log(`this.props.User_Redux.user.Password: ${this.props.User_Redux.user.Password}`);
         console.log(`this.state.NameDevice: ${this.state.NameDevice}`);
         console.log(`this.state.PasswordDevice: ${this.state.Key}`);
+        toast.loading('Loading...');
         let response = await checkDevice(this.state.NameDevice, this.state.Key);
 
         let Type = response.Type;
         console.log(`Type: ${Type}`);
-
         if (!response.isError) {
 
             let response = await addDevice(this.props.User_Redux.user.UserName, this.props.User_Redux.user.Password, this.state.NameDevice, this.state.Key, Type);
             if (!response.isError) {
-                let payload = 0
-                this.props.isOpenAddBox(payload)
+                let payload = { ...this.props.ControlAction_Redux }
+                payload.isOpenAddBox = 0
+                console.log(payload)
+                this.props.isOpenBox(payload)
+                payload = { ...this.props.User_Redux }
                 delete response.isError;
-                payload = response;
+                payload.message = response.message;
+                payload.user = response.user;
                 this.props.updateUser(payload);
             }
             else {
@@ -66,21 +76,25 @@ class AddDevice extends React.Component {
                 this.setState({
                     Notification: response.message
                 })
+                toast.remove();
 
             }
-
         }
         else {
+            
             console.log(`response: ${response.message}`);
             this.setState({
                 Notification: response.message
             })
+            toast.remove();
 
         }
+
         this.setState({
             NameDevice: '',
             Key: ''
         })
+        toast.remove();
 
     }
 
@@ -89,8 +103,14 @@ class AddDevice extends React.Component {
         if (this.props.ControlAction_Redux.isOpenAddBox) {
             return (
                 <React.Fragment>
+
+
                     <div className='Background-AddBox'>
                         <div className='AddBox'>
+                            <Toaster className="Toaster"
+                                position="top-center"
+                                reverseOrder={false}
+                            />
                             <div className='Title'>Thêm thiết bị mới</div>
                             <div className='Content'>
                                 <label className='Label'>Tên thiết bị</label>
@@ -111,15 +131,16 @@ class AddDevice extends React.Component {
                             <Notification Notification={this.state.Notification} />
                             <div className='Bnt-Control'>
                                 <button className='Bnt-'
-                                    onClick={() => { this.handleAddDevice() }}>Add</button>
+                                    onClick={() => { this.handleAddDevice() }}>Thêm</button>
                                 <button className='Bnt-'
-                                    onClick={() => { this.handleCancel() }}>Cancel</button>
+                                    onClick={() => { this.handleCancel() }}>Đóng</button>
 
                             </div>
 
                         </div>
 
                     </div>
+
                 </React.Fragment>
 
             )
@@ -144,7 +165,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatToProps = (dispatch) => {
     return {
-        isOpenAddBox: (payload) => dispatch(isOpenAddBox(payload)),
+        isOpenBox: (payload) => dispatch(isOpenBox(payload)),
         updateUser: (payload) => dispatch(updateUser(payload))
     }
 }
