@@ -84,7 +84,7 @@ class ChangeKey extends React.Component {
                             <div className='Title'>{this.props.Device.NameDeviceCustom}</div>
 
                             <div className='Content'>
-                                <label className='Label'>New Key</label>
+                                <label className='Label'>Key mới</label>
                                 <input type="text"
                                     className='Input'
                                     placeholder='Nhập Key thay đổi cho thiết bị'
@@ -92,7 +92,7 @@ class ChangeKey extends React.Component {
                                     onChange={(event) => this.handleOnChangeNewKey(event)} />
                             </div>
                             <div className='Content'>
-                                <label className='Label'>Key</label>
+                                <label className='Label'>Key hiện tại</label>
                                 <input type="text"
                                     className='Input'
                                     placeholder='Nhập Key hiện tại của thiết bị'

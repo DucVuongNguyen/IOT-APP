@@ -76,7 +76,7 @@ class UpdateKey extends React.Component {
                             <div className='Title'>{this.props.Device.NameDeviceCustom}</div>
 
                             <div className='Content'>
-                                <label className='Label'>Update Key</label>
+                                <label className='Label'>Key thiết bị</label>
                                 <input type="text"
                                     className='Input'
                                     placeholder='Nhập Key thiết bị'

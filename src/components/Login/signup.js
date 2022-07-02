@@ -77,7 +77,7 @@ class Login extends Component {
                 <section className='Signup-Background'>
                     <div className='Box'>
                         <div className='Title'>Sign up</div>
-                        <div className='placeholde'>Đăng kí tài khoản</div>
+                        <div className='placeholde'>Đăng kí tài khoản mới</div>
                         <div className='Content'>
                             <label className='Label'>Username</label>
                             <input type="text"
@@ -90,7 +90,7 @@ class Login extends Component {
                             <label className='Label'>Password</label>
                             <input type="text"
                                 className='Input'
-                                placeholder='Mật khẩu'
+                                placeholder='Mật khẩu tài khoản đăng kí'
                                 value={this.state.password}
                                 onChange={(event) => this.handleOnChangePassword(event)} />
                         </div>
@@ -98,7 +98,7 @@ class Login extends Component {
                         <div className='Bnt_Box'>
                             <button className='Bnt'
                                 onClick={() => { this.handleLogin() }}>Đăng nhập</button>
-                                <button className='Bnt'
+                            <button className='Bnt'
                                 onClick={() => { this.handleSignup() }}>Đăg ký</button>
                         </div>
 

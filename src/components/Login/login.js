@@ -82,7 +82,7 @@ class Login extends Component {
                             <label className='Label'>Username</label>
                             <input type="text"
                                 className='Input'
-                                placeholder='Tên tài khoản'
+                                placeholder='Tên tài khoản đăng nhập'
                                 value={this.state.username}
                                 onChange={(event) => this.handleOnChangeUsername(event)} />
                         </div>
@@ -90,7 +90,7 @@ class Login extends Component {
                             <label className='Label'>Password</label>
                             <input type="text"
                                 className='Input'
-                                placeholder='Mật khẩu'
+                                placeholder='Mật khẩu tài khoản đăng nhập'
                                 value={this.state.password}
                                 onChange={(event) => this.handleOnChangePassword(event)} />
                         </div>
