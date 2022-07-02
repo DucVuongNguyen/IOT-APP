@@ -59,24 +59,25 @@
                 justify-content: space-between;
                 width: 150px;
 
-                .FaBell-header {
+                .faBell{
                     padding: 0px 20px;
                     cursor: pointer;
+                    color: rgb(67, 205, 128,0.7);
+
+                }
+                .faBell:hover {
                     color: rgb(67, 205, 128);
 
                 }
 
-                .FaFlus-header {
+                .faFileCirclePlus {
                     padding: 0px 20px;
                     cursor: pointer;
-                    color: rgb(67, 205, 128);
-
-
-
+                    color: rgb(67, 205, 128,0.7);
                 }
-
-
-
+                .faFileCirclePlus:hover {
+                    color: rgb(67, 205, 128);
+                }
             }
 
             .Logout-div {

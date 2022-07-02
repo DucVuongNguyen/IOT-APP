@@ -2,7 +2,7 @@ import React from "react";
 import './home.scss';
 import AddDevice from '../AddDevice/addDevice'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faPlus, faMobileScreen, faMagic, faUser, faArrowRightFromBracket, faList, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faBell,faMobileScreen, faMagic, faUser, faArrowRightFromBracket, faList, faCaretDown, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { loginUser } from '../../store/action/userAction';
 import { isOpenBox } from '../../store/action/ControlAction'
@@ -69,8 +69,8 @@ class Home extends React.Component {
 
                             <div className="Header-end">
                                 <div className="Add-div">
-                                    <FontAwesomeIcon className="FaBell-header" icon={faBell} />
-                                    <FontAwesomeIcon className="FaFlus-header" icon={faPlus} onClick={() => { this.handleAddDevice() }} />
+                                    <FontAwesomeIcon className="faBell" icon={faBell} />
+                                    <FontAwesomeIcon className="faFileCirclePlus" icon={faFileCirclePlus} onClick={() => { this.handleAddDevice() }} />
 
                                 </div>
                                 <div className="Logout-div">

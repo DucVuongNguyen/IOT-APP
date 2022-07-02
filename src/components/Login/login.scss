@@ -75,13 +75,13 @@
 
         .Bnt_Box {
             display: flex;
-            flex-direction: row;
-
+            flex-direction: column;
+            align-items: center;
             .Bnt {
                 font-weight: bold;
                 color: white;
                 font-size: 20px;
-                width: fit-content;
+                width: 120px;
                 height: 40px;
                 border: none;
                 background: #a8ff78;
@@ -94,6 +94,14 @@
                 border-radius: 10px;
                 box-shadow: 0 4px 8px 0 rgb(67, 205, 128), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
                 cursor: pointer;
+            }
+            .Bnt_text {
+                font-weight: bold;
+                cursor: pointer;
+            color: rgb(105, 105, 105,0.6);
+            }
+            .Bnt_text:hover{
+                color: rgb(67, 205, 128);
             }
         }
 

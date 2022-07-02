@@ -97,9 +97,8 @@ class Login extends Component {
                         <Notification isError={this.state.isError} Notification={this.state.Notification} />
                         <div className='Bnt_Box'>
                             <button className='Bnt'
-                                onClick={() => { this.handleLogin() }}>Đăng nhập</button>
-                            <button className='Bnt'
                                 onClick={() => { this.handleSignup() }}>Đăg ký</button>
+                            <span className='Bnt_text' onClick={() => { this.handleLogin() }}>Đăng nhập</span>
                         </div>
 
                     </div>
